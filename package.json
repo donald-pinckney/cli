@@ -1,6 +1,6 @@
 {
   "version": "7.20.1",
-  "name": "minnpm",
+  "name": "maxnpm",
   "description": "a fork of NPM with the Pacsolve dependency resolver",
   "workspaces": [
     "docs",
@@ -40,8 +40,8 @@
   },
   "main": "./lib/npm.js",
   "bin": {
-    "minnpm": "bin/npm-cli.js",
-    "minnpx": "bin/npx-cli.js"
+    "maxpm": "bin/npm-cli.js",
+    "maxnpx": "bin/npx-cli.js"
   },
   "exports": {
     ".": [
@@ -53,7 +53,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@npmcli/arborist": "file:../arborist",
+    "@npmcli/arborist": "npm:maxarborist@^2.8.1",
     "@npmcli/ci-detect": "^1.2.0",
     "@npmcli/config": "^2.2.0",
     "@npmcli/map-workspaces": "^1.0.2",
