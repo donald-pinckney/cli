@@ -40,7 +40,7 @@
   },
   "main": "./lib/npm.js",
   "bin": {
-    "maxpm": "bin/npm-cli.js",
+    "maxnpm": "bin/npm-cli.js",
     "maxnpx": "bin/npx-cli.js"
   },
   "exports": {
