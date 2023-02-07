@@ -1,65 +1,34 @@
-[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/npm/cli/Node%20CI/latest)](https://github.com/npm/cli/actions?query=workflow%3A%22Node+CI%22+branch%3Alatest) [![Coveralls github branch](https://img.shields.io/coveralls/github/npm/cli/latest)](https://coveralls.io/github/npm/cli?branch=latest)
+# MaxNPM - A More Rational npm Client
 
-# npm - a JavaScript package manager
+MaxNPM is a npm client that utilizes [PacSolve](https://github.com/donald-pinckney/pacsolve), a
+dependency solver using [Rosette](https://github.com/emina/rosette) (a Z3-based SAT solver),
+to find the optimal dependency graph for a given set of dependencies. It offers several benefits over traditional npm,
+including minimizing the size of the node_modules folder by reducing the number of dependencies,
+improving the management of project vulnerabilities more effectively than `npm audit fix`,
+reducing the number of duplicate dependencies (that is multiple versions of the same dependency),
+and allowing users to choose the latest compatible version of a dependency with better results than a normal npm install.
 
-### Requirements
-
-* [**Node.js** `v10`](https://nodejs.org/en/download/) or higher must be installed to run this program
+The MaxNPM paper can be found [here](https://arxiv.org/abs/2203.13737).
 
 ### Installation
 
-**`npm`** comes bundled with [**`node`**](https://nodejs.org/), & most third-party distributions, by default. Officially supported downloads/distributions can be found at: [nodejs.org/en/download](https://nodejs.org/en/download)
-
-#### Direct Download
-
-You can download & install **`npm`** directly from [**npmjs**.com](https://npmjs.com/) using our custom `install.sh` script:
-
-```bash
-curl -qL https://www.npmjs.com/install.sh | sh
-```
-
-#### Node Version Managers
-
-If you're looking to manage multiple versions of **`node`** &/or **`npm`**, consider using a "Node Version Manager" such as:
-
-* [**`nvm`**](https://github.com/nvm-sh/nvm)
-* [**`nvs`**](https://github.com/jasongin/nvs)
-* [**`nave`**](https://github.com/isaacs/nave)
-* [**`n`**](https://github.com/tj/n)
-* [**`volta`**](https://github.com/volta-cli/volta)
-* [**`nodenv`**](https://github.com/nodenv/nodenv)
-* [**`asdf-nodejs`**](https://github.com/asdf-vm/asdf-nodejs)
+MaxNPM can be installed by simply running `npm install -g maxnpm`.
+The binaries included in the package in the npm registry are built for Linux version >= 4.10.
+For earlier versions of Linux or other operating systems, you will need to build MaxNPM from source.
 
 ### Usage
 
-```bash
-npm <command>
-```
+MaxNPM can be used as a drop-in replacement for npm by specifying the `--maxnpm` flag when running
+`maxnpm install`, as it uses the same interface as npm (except for the `maxnpm` binary prefix).
+Constraints are specified using the flag `--minimize <constraint1>,<constraint2>,...`,
+where the precedence of the constraints is the order in which they are specified.
 
-### Links & Resources
+Out of the box, we currently support the following constraints:
 
-* [**Documentation**](https://docs.npmjs.com/) - Official docs & how-tos for all things **npm**
-    * Note: you can also search docs locally with `npm help-search <query>`
-* [**Bug Tracker**](https://github.com/npm/cli/issues) - Search or submit bugs against the CLI
-* [**Roadmap**](https://github.com/npm/roadmap) - Track & follow along with our public roadmap
-* [**Feedback**](https://github.com/npm/feedback) - Contribute ideas & discussion around the npm registry, website & CLI
-* [**RFCs**](https://github.com/npm/rfcs) - Contribute ideas & specifications for the API/design of the npm CLI
-* [**Service Status**](https://status.npmjs.org/) - Monitor the current status & see incident reports for the website & registry
-* [**Project Status**](https://npm.github.io/statusboard/) - See the health of all our maintained OSS projects in one view
-* [**Events Calendar**](https://calendar.google.com/calendar/u/0/embed?src=npmjs.com_oonluqt8oftrt0vmgrfbg6q6go@group.calendar.google.com) - Keep track of our Open RFC calls, releases, meetups, conferences & more
-* [**Support**](https://www.npmjs.com/support) - Experiencing problems with the **npm** [website](https://npmjs.com) or [registry](https://registry.npmjs.org)? File a ticket [here](https://www.npmjs.com/support)
+- `min_oldness`: minimizes the number of installed old versions
+- `min_num_deps`: minimizes the number of dependencies
+- `min_duplicates`: minimizes the number of duplicate dependencies
+- `min_cve`: minimizes the number of vulnerabilities
 
-### Acknowledgments
-
-* `npm` is configured to use the **npm Public Registry** at [https://registry.npmjs.org](https://registry.npmjs.org) by default; Usage of this registry is subject to **Terms of Use** available at [https://npmjs.com/policies/terms](https://npmjs.com/policies/terms)
-* You can configure `npm` to use any other compatible registry you prefer. You can read more about configuring third-party registries [here](https://docs.npmjs.com/cli/v7/using-npm/registry)
-
-### FAQ on Branding
-
-#### Is it "npm" or "NPM" or "Npm"?
-
-**`npm`** should never be capitalized unless it is being displayed in a location that is customarily all-capitals (ex. titles on `man` pages).
-
-#### Is "npm" an acronym for "Node Package Manager"?
-
-Contrary to popular belief, **`npm`** **is not** in fact an acronym for "Node Package Manager"; It is a recursive bacronymic abbreviation for **"npm is not an acronym"** (if the project was named "ninaa", then it would be an acronym). The precursor to **`npm`** was actually a bash utility named **"pm"**, which was the shortform name of **"pkgmakeinst"** - a bash function that installed various things on various platforms. If **`npm`** were to ever have been considered an acronym, it would be as "node pm" or, potentially "new pm".
+For example, if you want to minimize the number of old versions and the number of vulnerabilities,
+you would run `maxnpm install --maxnpm --minimize min_oldness,min_cve`.
