@@ -1,5 +1,5 @@
 {
-  "version": "7.20.10",
+  "version": "7.20.11",
   "name": "maxnpm",
   "description": "a fork of NPM with the Pacsolve dependency resolver",
   "workspaces": [
